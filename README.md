@@ -2,6 +2,8 @@
 
 Report Generator turns an orders workbook and a products workbook into a validated, auditable Excel sales report. It runs entirely in the browser: uploaded files are not sent to a server, and a visitor can try the full flow with deterministic synthetic data.
 
+[Open the public GitHub Pages demo](https://dhordii.github.io/report-generator/).
+
 ## What it produces
 
 `Sales Report.xlsx` contains six worksheets:
@@ -90,7 +92,7 @@ No backend, analytics, runtime CDN, cookies, accounts, or environment variables 
 
 ## GitHub Pages
 
-The Vite build uses relative asset URLs and can be hosted from a GitHub Pages project path. `.github/workflows/deploy-pages.yml` is intentionally manual (`workflow_dispatch`) so publication remains an explicit release action. Before deploying, run the full verification matrix, review the intended commit, trigger the workflow, and smoke-test the public URL.
+The Vite build uses relative asset URLs for the GitHub Pages project path. GitHub Pages uses **GitHub Actions** as its publishing source. `.github/workflows/deploy-pages.yml` is intentionally manual (`workflow_dispatch`) so publication remains an explicit release action. Before deploying, run the full verification matrix, review the intended commit, trigger the workflow, and smoke-test the [public URL](https://dhordii.github.io/report-generator/).
 
 Rollback is a deployment of the previous verified commit. Do not treat a successful CI run alone as proof that the public site works.
 
