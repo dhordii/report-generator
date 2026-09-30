@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState, type ChangeEvent, type DragEvent, type KeyboardEvent, type ReactNode } from 'react';
+import { useEffect, useId, useRef, useState, type ChangeEvent, type DragEvent, type ReactNode } from 'react';
 import { MappingPanel, ReportPanel, ReviewPanel } from './components/WorkflowPanels';
 import { WorkbookIcon } from './components/WorkbookIcon';
 import { renderReportCharts } from './domain/chartRenderer';
@@ -64,12 +64,6 @@ function FileIntake({ selection, kind, onChange }: FileIntakeProps) {
     onChange(kind, event.dataTransfer.files[0] ?? null);
   };
 
-  const handlePickerKeyDown = (event: KeyboardEvent<HTMLLabelElement>) => {
-    if (event.key !== 'Enter' && event.key !== ' ') return;
-    event.preventDefault();
-    inputRef.current?.click();
-  };
-
   return (
     <section
       className={`file-intake file-intake--${kind}`}
@@ -83,7 +77,7 @@ function FileIntake({ selection, kind, onChange }: FileIntakeProps) {
         <small>{selection?.name ?? 'Choose .xlsx or drag and drop'}</small>
         <span>{selection ? `${Math.max(1, Math.round(selection.size / 1024)).toLocaleString('en-US')} KB` : '10 MB max · .xlsx only'}</span>
       </span>
-      <label className="button button--quiet" htmlFor={inputId} role="button" tabIndex={0} onKeyDown={handlePickerKeyDown}>{selection ? 'Replace' : 'Choose .xlsx'}</label>
+      <button className="button button--quiet" onClick={() => inputRef.current?.click()} type="button">{selection ? 'Replace' : 'Choose .xlsx'}</button>
       <input ref={inputRef} id={inputId} accept=".xlsx" type="file" tabIndex={-1} onChange={handleChange} />
     </section>
   );
