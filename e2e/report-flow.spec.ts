@@ -110,11 +110,11 @@ test('uploaded xlsx files are parsed and generate the expected KPI value', async
   const inputs = page.locator('input[type="file"]');
   await expect(inputs.nth(0)).toHaveAttribute('tabindex', '-1');
   await expect(inputs.nth(1)).toHaveAttribute('tabindex', '-1');
-  const ordersPicker = page.locator('.file-intake--orders label[role="button"]');
+  const ordersPicker = page.locator('.file-intake--orders button');
   await ordersPicker.focus();
   await expect(ordersPicker).toBeFocused();
   const fileChooserPromise = page.waitForEvent('filechooser');
-  await page.keyboard.press('Enter');
+  await ordersPicker.press('Enter');
   const fileChooser = await fileChooserPromise;
   await fileChooser.setFiles(ordersPath);
   await inputs.nth(1).setInputFiles(productsPath);
