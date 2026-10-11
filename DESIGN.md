@@ -211,11 +211,11 @@ The palette pairs cool paper-like neutrals with one precise blue accent; semanti
 
 ## Layout
 
-The desktop shell is centered at a maximum width of 1586px with 55px side gutters. The first view moves from a 50px utility header to a compact centered introduction, then a three-column intake strip, a four-step rail, and a broad proof area. The proof area uses a flexible analysis column beside a 405px workbook column; workflow screens replace it with one bordered panel and keep the same outer gutter.
+The desktop shell is centered at a maximum width of 1920px. Its side gutters scale with the viewport from 24px to 72px, allowing the workbench to use widescreen space without stretching edge to edge. The first view moves from a 50px utility header to a compact centered introduction, then a three-column intake strip, a four-step rail, a distinct 24px vertical transition, and a broad proof area. The proof area uses a flexible analysis column beside a workbook column that scales from 320px to 405px; workflow screens replace it with one bordered panel and keep the same outer gutter.
 
-Spacing follows a compact 4/8/12/16/24 rhythm, with 55px reserved for the outer desktop frame. One-pixel rules separate dense regions and let padding, rather than independent cards, create grouping.
+Spacing follows a compact 4/8/12/16/24 rhythm, with an adaptive 24–72px outer desktop gutter. One-pixel rules separate dense regions and let padding, rather than independent cards, create grouping.
 
-At 980px and below, the intake becomes two columns with the sample action spanning both, the proof stacks to one column, mapping cards stack, and outer gutters reduce to 28px. At 640px and below, controls become one column, outer gutters reduce to 16px, the workflow metrics become a two-by-two grid, actions become full-width, and a visible advisory recommends desktop for wide report review. Charts and tables preserve their readable minimum widths and scroll horizontally instead of compressing labels into illegibility.
+At 1240px and below, dense file and mapping controls tighten without reducing their touch targets, and order mappings switch to one field per row. At 1100px and below, the intake becomes two columns with the sample action spanning both, the proof and mapping cards stack, the transition above the proof reduces to 20px, and outer gutters reduce to 28px. At 760px the file inputs become a single column. At 640px and below, outer gutters reduce to 16px, the workflow metrics become a two-by-two grid, actions become full-width, and a visible advisory recommends desktop for wide report review. Charts and tables preserve their readable minimum widths and scroll horizontally instead of compressing labels into illegibility.
 
 **The Wide Evidence Rule.** Preserve the integrity of tables and charts with explicit overflow; do not squeeze audit evidence until values or headers become ambiguous.
 
