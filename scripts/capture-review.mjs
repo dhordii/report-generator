@@ -21,6 +21,29 @@ async function capture(name, viewport, prepare) {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   const overflow = await page.evaluate(() => ({ width: window.innerWidth, scrollWidth: document.documentElement.scrollWidth }));
   if (overflow.scrollWidth > overflow.width) findings.push(`${name} horizontal overflow: ${overflow.scrollWidth}px at ${overflow.width}px`);
+  const sectionOverlap = await page.evaluate(() => {
+    const sampleAction = document.querySelector('.r-sample-action')?.getBoundingClientRect();
+    const progressRail = document.querySelector('.r-progress-rail')?.getBoundingClientRect();
+    return sampleAction && progressRail && sampleAction.bottom > progressRail.top + 1
+      ? Math.round(sampleAction.bottom - progressRail.top)
+      : 0;
+  });
+  if (sectionOverlap > 0) findings.push(`${name} intake overlaps progress rail by ${sectionOverlap}px`);
+  const issuesLayout = await page.evaluate(() => {
+    const wrap = document.querySelector('.issues-table-wrap');
+    const actions = document.querySelector('.correction-editor__actions');
+    if (!wrap) return null;
+    const wrapRect = wrap.getBoundingClientRect();
+    const actionsRect = actions?.getBoundingClientRect();
+    return {
+      overflow: wrap.scrollWidth - wrap.clientWidth,
+      clippedActions: actionsRect
+        ? Math.max(0, actionsRect.right - wrapRect.right, wrapRect.left - actionsRect.left)
+        : 0,
+    };
+  });
+  if (issuesLayout && issuesLayout.overflow <= 1 && issuesLayout.clippedActions > 1) findings.push(`${name} correction actions clipped by ${Math.round(issuesLayout.clippedActions)}px`);
+  if (name === 'review-laptop' && issuesLayout?.overflow > 1) findings.push(`${name} issues table overflows by ${issuesLayout.overflow}px`);
   await page.screenshot({ path: `${outputDirectory}/${name}.png`, fullPage: true, animations: 'disabled' });
   await page.close();
 }
@@ -33,6 +56,15 @@ async function openReview(page, showEditor = false) {
   }
 }
 
+await capture('hero-1024', { width: 1024, height: 768 });
+await capture('hero-1280', { width: 1280, height: 800 });
+await capture('hero-1366', { width: 1366, height: 768 });
+await capture('hero-1440', { width: 1440, height: 1000 });
+await capture('hero-1920', { width: 1920, height: 1080 });
+await capture('hero-2560', { width: 2560, height: 1440 });
+await capture('hero-3440', { width: 3440, height: 1440 });
+await capture('review-tablet', { width: 1024, height: 768 }, async (page) => openReview(page, true));
+await capture('review-laptop', { width: 1280, height: 800 }, async (page) => openReview(page, true));
 await capture('review-desktop', { width: 1440, height: 1000 }, async (page) => openReview(page, true));
 await capture('review-mobile', { width: 390, height: 844 }, async (page) => openReview(page, true));
 await capture('review-dark', { width: 1440, height: 1000 }, async (page) => {
@@ -47,4 +79,22 @@ await capture('report', { width: 1440, height: 1000 }, async (page) => {
 });
 
 await browser.close();
-console.log(JSON.stringify({ captures: ['review-desktop.png', 'review-mobile.png', 'review-dark.png', 'report.png'], findings }, null, 2));
+console.log(JSON.stringify({
+  captures: [
+    'hero-1024.png',
+    'hero-1280.png',
+    'hero-1366.png',
+    'hero-1440.png',
+    'hero-1920.png',
+    'hero-2560.png',
+    'hero-3440.png',
+    'review-tablet.png',
+    'review-laptop.png',
+    'review-desktop.png',
+    'review-mobile.png',
+    'review-dark.png',
+    'report.png',
+  ],
+  findings,
+}, null, 2));
+if (findings.length > 0) process.exitCode = 1;
