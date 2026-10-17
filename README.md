@@ -92,7 +92,7 @@ No backend, analytics, runtime CDN, cookies, accounts, or environment variables 
 
 ## GitHub Pages
 
-The Vite build uses relative asset URLs for the GitHub Pages project path. GitHub Pages uses **GitHub Actions** as its publishing source. `.github/workflows/deploy-pages.yml` is intentionally manual (`workflow_dispatch`) so publication remains an explicit release action. Before deploying, run the full verification matrix, review the intended commit, trigger the workflow, and smoke-test the [public URL](https://dhordii.github.io/report-generator/).
+The Vite build uses relative asset URLs for the GitHub Pages project path. GitHub Pages uses **GitHub Actions** as its publishing source. `.github/workflows/deploy-pages.yml` is intentionally manual (`workflow_dispatch`) so publication remains an explicit release action. The workflow runs linting, type checks, unit tests, a production build, and the Chromium end-to-end smoke test for the selected revision before publishing. Review the intended commit, trigger the workflow, and then smoke-test the [public URL](https://dhordii.github.io/report-generator/).
 
 Rollback is a deployment of the previous verified commit. Do not treat a successful CI run alone as proof that the public site works.
 
